@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-  console.log('ci/cd check')
+  console.log('ci/cd ci/cd')
 
   return (
     <div className="App">
