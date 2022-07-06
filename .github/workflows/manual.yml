@@ -1,0 +1,67 @@
+name: manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-branch:
+        description: 'Target branch'
+        required: true
+        default: 'main'
+
+env:
+  CI: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+
+      - name: Save artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: image
+          path: ./build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: image
+          path: ./build
+
+      - name: Deploy
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'build'
+          destination-github-username: 'vitaliykomissarov'
+          destination-repository-name: 'main'
+          target-directory: 'templates/front-app/'
+          user-email: 'vitaliy.komissarov089@gmail.com'
+          commit-message: 'update front-app build files'
+          target-branch: 'main'
