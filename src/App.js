@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-  console.log('ci/cd ci/cd')
+  console.log('ci/cd')
 
   return (
     <div className="App">
