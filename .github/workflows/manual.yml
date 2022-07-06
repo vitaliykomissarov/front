@@ -64,4 +64,4 @@ jobs:
           target-directory: 'templates/front-app/'
           user-email: 'vitaliy.komissarov089@gmail.com'
           commit-message: 'update front-app build files'
-          target-branch: 'main'
+          target-branch: ${{github.event.inputs.target-branch}}
