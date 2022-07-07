@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-console.log('check')
+console.log('check ci/cd')
 
 function App() {
   return (
